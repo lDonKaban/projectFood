@@ -37,12 +37,12 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     hideTabContent();
-    showTabContent();
+    showTabContent(); // End Tabs
 
 
     //      TIMER
 
-    let deadLine = '2021-04-20';
+    let deadLine = '2021-07-22';
 
     function getTimeRemaining(endtime) {
         const timer = Date.parse(endtime) - Date.parse(new Date()),
@@ -84,7 +84,7 @@ window.addEventListener('DOMContentLoaded', () => {
         return elem;
     }
 
-    setClock('.timer', deadLine);
+    setClock('.timer', deadLine); // End Timer
     
     //      MODAL
 
@@ -132,5 +132,127 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    window.addEventListener('scroll', showModalByScroll);
+    window.addEventListener('scroll', showModalByScroll); // End Modal
+
+    // MENU
+
+    class MenuItems {
+        constructor (url, alt, title, text, price, parentSelector, ...classes) {
+            this.url = url;
+            this.alt = alt;
+            this.title = title;
+            this.text = text;
+            this.price = price;
+            this.parent = document.querySelector(parentSelector);
+            this.classes = classes;
+            this.transfer = 27;
+            this.changeToUAH();
+        }
+
+        changeToUAH () {
+            this.price = this.price * this.transfer;
+        }
+
+        createItem () {
+            const element = document.createElement('div');
+            if (this.classes.length === 0) {
+                this.class = 'menu__item';
+                element.classList.add(this.class);
+            } else {
+               this.classes.forEach(className => element.classList.add(className));
+            }
+
+
+            element.innerHTML = `
+                <img src="${this.url}" alt="${this.alt}">
+                <h3 class="menu__item-subtitle">${this.title}</h3>
+                <div class="menu__item-descr">${this.text}</div>
+                <div class="menu__item-divider"></div>
+                <div class="menu__item-price">
+                    <div class="menu__item-cost">Цена:</div>
+                    <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+                </div>
+            `;
+            this.parent.append(element);
+        }
+    }
+
+    new MenuItems (
+        'img/tabs/vegy.jpg', 
+        'vegy', 
+        'Меню "Фитнес"', 
+        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!', 
+        9,
+        '.menu .container').createItem();
+
+    new MenuItems (
+        'img/tabs/elite.jpg', 
+        'elite', 
+        'Меню “Премиум”', 
+        'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!', 
+        14,
+        '.menu .container').createItem();
+
+    new MenuItems (
+        'img/tabs/post.jpg', 
+        'post', 
+        'Меню "Постное"', 
+        'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.', 
+        21,
+        '.menu .container').createItem(); // End Menu
+
+
+    // FORM
+
+    const form = document.querySelectorAll('form'),
+          data = {
+              loading: 'Подождите, идет загрузка',
+              success: 'Спасибо! Мы скоро с вами свяжемся.',
+              failure: 'Что-то пошло не так...'
+          };
+    
+    form.forEach(item => {
+        postRequest(item);
+    })
+
+    function postRequest (form) {
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+
+            const statusRequest = document.createElement('div');
+            statusRequest.classList.add('status');
+            statusRequest.textContent = data.loading;
+            form.append(statusRequest);
+
+            const request = new XMLHttpRequest();
+            request.open('POST', 'server.php');
+            request.setRequestHeader('Content-type', 'application/json');
+
+            const formData = new FormData(form),
+                  object = {};
+            
+            formData.forEach((value, key) => {
+                object[key] = value
+            })
+
+            const json = JSON.stringify(object);
+
+            request.send(json);
+
+            request.addEventListener('load', () => {
+                if (request.status === 200) {
+                    console.log(request.response);
+                    statusRequest.textContent = data.success;
+                    form.reset();
+                    setTimeout(() => {
+                        statusRequest.remove();
+                    }, 2000);
+                } else {
+                    statusRequest.textContent = data.failure;
+                }
+            })
+        })
+    } // End Form
+
+
 });
