@@ -132,11 +132,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-<<<<<<< HEAD
     window.addEventListener('scroll', showModalByScroll); // End Modal
-=======
-    window.addEventListener('scroll', showModalByScroll);
->>>>>>> 593746308eca5887bfb55b45270356f084fd274d
 
     // MENU
 
@@ -204,4 +200,57 @@ window.addEventListener('DOMContentLoaded', () => {
         'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.', 
         21,
         '.menu .container').createItem(); // End Menu
+
+    
+    // FORM
+
+    const form = document.querySelectorAll('form'),
+          data = {
+              loading: 'Подождите, идет загрузка',
+              success: 'Спасибо! Мы скоро с вами свяжемся.',
+              failure: 'Что-то пошло не так...'
+          };
+    
+    form.forEach(item => {
+        postRequest(item);
+    })
+
+    function postRequest (form) {
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+
+            const statusRequest = document.createElement('div');
+            statusRequest.classList.add('status');
+            statusRequest.textContent = data.loading;
+            form.append(statusRequest);
+
+            const request = new XMLHttpRequest();
+            request.open('POST', 'server.php');
+            request.setRequestHeader('Content-type', 'application/json');
+
+            const formData = new FormData(form),
+                  object = {};
+            
+            formData.forEach((value, key) => {
+                object[key] = value
+            })
+
+            const json = JSON.stringify(object);
+
+            request.send(json);
+
+            request.addEventListener('load', () => {
+                if (request.status === 200) {
+                    console.log(request.response);
+                    statusRequest.textContent = data.success;
+                    form.reset();
+                    setTimeout(() => {
+                        statusRequest.remove();
+                    }, 2000);
+                } else {
+                    statusRequest.textContent = data.failure;
+                }
+            })
+        })
+    } // End Form
 });
