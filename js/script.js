@@ -275,6 +275,5 @@ window.addEventListener('DOMContentLoaded', () => {
         }, 4000);
 
 
-    }
-    // End Form
+    }  // End Form
 });
