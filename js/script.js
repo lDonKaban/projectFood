@@ -273,7 +273,10 @@ window.addEventListener('DOMContentLoaded', () => {
             modalDialog.classList.remove('hide');
             closeModal();
         }, 4000);
-
-
     }  // End Form
+
+    fetch('http://localhost:3000/menu')
+        .then(data => data.json())
+        .then(res => console.log(res));
+
 });
