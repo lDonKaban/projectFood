@@ -234,7 +234,6 @@ window.addEventListener('DOMContentLoaded', () => {
                   json = JSON.stringify(Object.fromEntries(formData.entries()));
 
             postData('http://localhost:3000/requests', json)
-
             .then((info) => {
                 console.log(info);
                 showThanksModal(data.success);
