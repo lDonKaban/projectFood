@@ -350,10 +350,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     
     next.addEventListener('click', () => {
-        if (offset == +width.slice(0, width.length - 2) * (sliders.length - 1)) {
+        if (offset == parseToNumber(width) * (sliders.length - 1)) {
             offset = 0;
         } else {
-            offset += +width.slice(0, width.length - 2);
+            offset += parseToNumber(width);
         }
 
         slidersLine.style.transform = `translateX(-${offset}px)`;
@@ -376,9 +376,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
     prev.addEventListener('click', () => {
         if (offset == 0) {
-            offset = +width.slice(0, width.length - 2) * (sliders.length - 1);
+            offset = parseToNumber(width) * (sliders.length - 1);
         } else {
-            offset -= +width.slice(0, width.length - 2); 
+            offset -= parseToNumber(width); 
         }
         
         slidersLine.style.transform = `translateX(-${offset}px)`;
@@ -397,7 +397,7 @@ window.addEventListener('DOMContentLoaded', () => {
         dot.addEventListener('click', (e) => {
             const slideTo = e.target.getAttribute('data-slide-to');
             sliderIndex = slideTo;
-            offset = +width.slice(0, width.length - 2) * (slideTo - 1);
+            offset = parseToNumber(width) * (slideTo - 1);
             slidersLine.style.transform = `translateX(-${offset}px)`;
             changeCurrent();
             activeDot();
@@ -415,5 +415,9 @@ window.addEventListener('DOMContentLoaded', () => {
         } else {
             current.textContent = sliderIndex;
         }
+    }
+    
+    function parseToNumber (string) {
+        return +string.replace(/\D/g, '');
     } // End Slider
 });
