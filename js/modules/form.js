@@ -66,7 +66,7 @@ function form (formSelector, modalTimerId) {
             modalDialog.classList.remove('hide');
             closeModal('.modal');
         }, 4000);
-    }  // End Form
+    }  
 }
 
 export default form;

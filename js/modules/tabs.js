@@ -1,5 +1,4 @@
 function tabs (tabsSelector, tabsContentSelector, tabParentSelector, activeClass) {
-    //      TABS
 
     const tabs = document.querySelectorAll(tabsSelector),
           tabContent = document.querySelectorAll(tabsContentSelector),
@@ -36,7 +35,7 @@ function tabs (tabsSelector, tabsContentSelector, tabParentSelector, activeClass
     });
 
     hideTabContent();
-    showTabContent(); // End Tabs
+    showTabContent(); 
 }
 
 export default tabs;

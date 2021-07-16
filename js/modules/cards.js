@@ -1,7 +1,6 @@
 import {getData} from '../services/services';
 
 function cards () {
-    // MENU
 
     class MenuItems {
         constructor (url, alt, title, text, price, parentSelector, ...classes) {
@@ -49,7 +48,7 @@ function cards () {
         data.forEach(({img, altimg, title, descr, price}) => {
             new MenuItems(img, altimg, title, descr, price, '.menu .container').createItem();
         });
-    }); // End Menu
+    }); 
 }
 
 export default cards;

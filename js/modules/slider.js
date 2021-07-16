@@ -146,7 +146,7 @@ function slider ({container, slide, nextArrow, prevArrow, totalCounter, currentC
     
     function parseToNumber (string) {
         return string = +string.match(/(\d+\.\d+)|(\d+)/g);
-    } // End Slider
+    } 
 }
 
 export default slider;
